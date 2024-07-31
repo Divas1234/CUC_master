@@ -1,0 +1,9 @@
+{
+  "editor.fontFamily": "Hasklug Nerd Font Mono, Consolas, 'Courier New', monospace",
+  "CodeGPT.apiKey": "Ollama",
+  "editor.tokenColorCustomizations": {
+    "comments": "",
+    "textMateRules": []
+  },
+  "editor.fontSize": 15
+}
