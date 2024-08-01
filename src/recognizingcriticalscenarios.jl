@@ -48,7 +48,7 @@ function filtering_freq_criticalscenario(each_netloadcurve, clustered_num)
 	each_netloadcurve = each_netloadcurve[:, :]
 
 	# println(each_netloadcurve)
-	R = kmeans(each_netloadcurve, clustered_num, maxiter = 2000, display = :none)
+	R = kmeans(each_netloadcurve, clustered_num; maxiter = 2000, display = :none)
 	@assert nclusters(R) == clustered_num # verify the number of clusters
 
 	mapping_location = assignments(R) # get the assignments of points to clusters
@@ -74,14 +74,14 @@ end
 function filtering_flex_criticalscenario(each_netloadcurve, clustered_num)
 	each_netloadcurve = each_netloadcurve[:, :]
 
-	R = kmeans(each_netloadcurve, clustered_num, maxiter = 2000, display = :none)
+	R = kmeans(each_netloadcurve, clustered_num; maxiter = 2000, display = :none)
 	@assert nclusters(R) == clustered_num # verify the number of clusters
 
 	mapping_location = assignments(R) # get the assignments of points to clusters
 	each_subclustered_num = counts(R) # get the cluster sizes
 	M = adjoint((R.centers)) # get the cluster centers
 
-	sorted_M = sort(M[:, 1], rev = true)
+	sorted_M = sort(M[:, 1]; rev = true)
 	lc1 = findall(x -> x == sorted_M[1], M)[1][1]
 	lc2 = findall(x -> x == sorted_M[2], M)[1][1]
 	critical_scenario_1 = findall(x -> x == lc1, mapping_location) # get the critical scenarios for frequency dynamic checkvaildity

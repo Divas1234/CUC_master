@@ -19,6 +19,7 @@ config_param, units, lines, loads, stroges, NB, NG, NL, ND, NT, NC = forminputda
 if config_param.is_WindIntegration == 1
 	winds, NW = genscenario(WindsFreqParam, 2)
 end
+
 NT = 24
 rampingup_critical_scenario, frequency_critical_scenario = recognizing_critical_scenarios(winds, loads, NT)
 # @btime p₀, pᵨ, pᵩ, seq_sr⁺, seq_sr⁻, su_cost, sd_cost, prod_cost, cost_sr⁺, cost_sr⁻ = scucmodel(
@@ -26,6 +27,7 @@ rampingup_critical_scenario, frequency_critical_scenario = recognizing_critical_
 
 cunits, cNG, cluster_cunitsset, cluster_featurematrix = calculating_clustered_units(units, DataGen, GenCost, UnitsFreqParam)
 # sum(cluster_featurematrix[:,2])
+
 p₀, pᵨ, pᵩ, seq_sr⁺, seq_sr⁻, su_cost, sd_cost, prod_cost, cost_sr⁺, cost_sr⁻ = refined_cscucmodel(NT, NB, NG, cNG, ND, NC, units, cunits, loads, winds, lines, config_param, cluster_cunitsset, cluster_featurematrix, rampingup_critical_scenario,
 	frequency_critical_scenario)
 
