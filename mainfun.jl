@@ -22,15 +22,13 @@ DataBranch,
 LoadCurve,
 DataLoad = readxlssheet()
 
-config_param, units, lines, loads, stroges, NB, NG, NL, ND, NT, NC = forminputdata(
-	DataGen,
+config_param, units, lines, loads, strsges, NB, NG, NL, ND, NT, NC = forminputdata(DataGen,
 	DataBranch,
 	DataLoad,
 	LoadCurve,
 	GenCost,
 	UnitsFreqParam,
-	StrogeData,
-)
+	StrogeData)
 
 winds, NW = genscenario(WindsFreqParam, 1)
 
@@ -38,20 +36,16 @@ winds, NW = genscenario(WindsFreqParam, 1)
 rampingup_critical_scenario, frequency_critical_scenario = recognizing_critical_scenarios(winds, loads, NT)
 # jldsave("/home/yuanyiping/下载/task 9/master-5/res/scenarios/scenaros5.jld2"; rampingup_critical_scenario, frequency_critical_scenario)
 
-p1 = Plots.heatmap(
-	rampingup_critical_scenario;
+p1 = Plots.heatmap(rampingup_critical_scenario;
 	c = cgrad([:white, :red]),
 	# title = "critical scenarios for flexility-check",
 	ylabel = "scenarios",
-	xlabel = "time",
-)
-p2 = Plots.heatmap(
-	frequency_critical_scenario;
+	xlabel = "time")
+p2 = Plots.heatmap(frequency_critical_scenario;
 	c = cgrad([:white, :blue]),
 	#  title="critical scenarios for frequency-dynamics",
 	ylabel = "scenarios",
-	xlabel = "time",
-)
+	xlabel = "time")
 Plots.plot(p1, p2; size = (800, 300), titlefontsize = 8, layout = (1, 2))
 
 # f_base = 50.0
@@ -73,8 +67,7 @@ Plots.plot(p1, p2; size = (800, 300), titlefontsize = 8, layout = (1, 2))
 # )
 
 NT = 24
-@time p₀, pᵨ, pᵩ, seq_sr⁺, seq_sr⁻, su_cost, sd_cost, prod_cost, cost_sr⁺, cost_sr⁻ = scucmodel(
-	NT,
+@time p₀, pᵨ, pᵩ, seq_sr⁺, seq_sr⁻, su_cost, sd_cost, prod_cost, cost_sr⁺, cost_sr⁻ = scucmodel(NT,
 	NB,
 	NG,
 	ND,
@@ -85,13 +78,11 @@ NT = 24
 	lines,
 	config_param,
 	rampingup_critical_scenario,
-	frequency_critical_scenario,
-)
+	frequency_critical_scenario)
 
 cunits, cNG, cluster_cunitsset, cluster_featurematrix = calculating_clustered_units(units, DataGen, GenCost, UnitsFreqParam)
 
-@time p₀, pᵨ, pᵩ, seq_sr⁺, seq_sr⁻, su_cost, sd_cost, prod_cost, cost_sr⁺, cost_sr⁻ = refined_cscucmodel(
-	NT,
+@time p₀, pᵨ, pᵩ, seq_sr⁺, seq_sr⁻, su_cost, sd_cost, prod_cost, cost_sr⁺, cost_sr⁻ = refined_cscucmodel(NT,
 	NB,
 	NG,
 	cNG,
@@ -106,11 +97,9 @@ cunits, cNG, cluster_cunitsset, cluster_featurematrix = calculating_clustered_un
 	cluster_cunitsset,
 	cluster_featurematrix,
 	rampingup_critical_scenario,
-	frequency_critical_scenario,
-)
+	frequency_critical_scenario)
 
-@time p₀, pᵨ, pᵩ, seq_sr⁺, seq_sr⁻, su_cost, sd_cost, prod_cost, cost_sr⁺, cost_sr⁻ = simfilied_cscucmodel(
-	NT,
+@time p₀, pᵨ, pᵩ, seq_sr⁺, seq_sr⁻, su_cost, sd_cost, prod_cost, cost_sr⁺, cost_sr⁻ = simfilied_cscucmodel(NT,
 	NB,
 	cNG,
 	ND,
@@ -121,11 +110,9 @@ cunits, cNG, cluster_cunitsset, cluster_featurematrix = calculating_clustered_un
 	lines,
 	config_param,
 	rampingup_critical_scenario,
-	frequency_critical_scenario,
-)
+	frequency_critical_scenario)
 
-plotcasestudies(
-	p₀,
+plotcasestudies(p₀,
 	pᵨ,
 	pᵩ,
 	seq_sr⁺,
@@ -139,5 +126,4 @@ plotcasestudies(
 	NG,
 	ND,
 	NW,
-	NC,
-)
+	NC)
